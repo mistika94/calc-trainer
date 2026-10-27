@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор: методичка</title>
+  <style>
+    body { margin: 0; background: #e9e9e9; color: #000; font: 12pt/1.4 'Times New Roman', Times, serif; }
+    .page { max-width: 820px; margin: 20px auto; padding: 40px 50px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    h1 { text-align: center; font-size: 18pt; margin: 0 0 4px; }
+    .sub { text-align: center; margin: 0 0 24px; }
+    h2 { font-size: 15pt; margin: 28px 0 10px; page-break-after: avoid; }
+    h3 { font-size: 13pt; margin: 18px 0 6px; page-break-after: avoid; }
+    p { text-align: justify; margin: 0 0 8px; text-indent: 1.25cm; }
+    p.ni { text-indent: 0; }
+    ul, ol { margin: 0 0 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; }
+    th, td { border: 1px solid #000; padding: 4px 6px; vertical-align: top; text-align: left; }
+    th { font-weight: bold; }
+    pre, code { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+    pre { margin: 4px 0 8px; padding: 6px 8px; border: 1px solid #999; white-space: pre-wrap; }
+    .step { page-break-inside: avoid; border-top: 1px solid #000; padding-top: 6px; margin-top: 10px; }
+    .step-h { font-weight: bold; }
+    .lbl { font-weight: bold; }
+    .print { position: fixed; right: 20px; top: 20px; padding: 8px 14px; font: 14px sans-serif; cursor: pointer; }
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+      .print { display: none; }
+      @page { margin: 2cm 1.5cm 2cm 2.5cm; }
+    }
+  </style>
+</head>
+<body>
+  <button class="print" onclick="print()">Печать / PDF</button>
+  <div class="page">
+    <h1>Тренажёр «Калькулятор на HTML, CSS и JavaScript»</h1>
+    <p class="sub">Методические указания для преподавателя</p>
+
+    <h2>1. Назначение тренажёра</h2>
+    <p>Тренажёр проводит ученика по всему пути создания веб-приложения: от создания папки проекта до публикации на GitHub. Все действия выполняются внутри тренажёра: он изображает рабочий стол Windows, редактор VS Code, браузер, терминал и сайт GitHub, поэтому устанавливать программы не нужно, а заниматься можно и дома.</p>
+    <p>Код ученик набирает сам по образцу — по одной-две строки за шаг. Тренажёр проверяет набранное и подсказывает, где ошибка: регистр букв, русская раскладка, незакрытая кавычка или скобка, пропущенная точка с запятой. Повторяющиеся части (остальные кнопки, второстепенные свойства CSS, остальные ветки условия) робот дописывает сам и объясняет, что добавил.</p>
+
+    <h2>2. Как пользоваться</h2>
+    <table>
+      <tr><th style="width:32%">Кому</th><th>Ссылка и возможности</th></tr>
+      <tr><td>Ученику</td><td><code>index.html</code> — имя, логин GitHub (необязательно), дальше шаги по порядку. Прогресс сохраняется в браузере; кнопка ↺ — начать заново. Вставка кода из буфера отключена: код набирается руками.</td></tr>
+      <tr><td>Преподавателю</td><td><code>index.html?teacher</code> — к каждому шагу комментарий, кнопка «Подставить ответ», точки шагов в шапке кликабельны (переход к любому шагу), вставка разрешена. Ссылка сразу на шаг: <code>index.html?teacher#step=jsCalc</code> (идентификаторы шагов — в таблице ниже).</td></tr>
+    </table>
+    <p class="ni"><span class="lbl">Управление:</span> Enter — проверить строку; в многострочных шагах Enter — новая строка, Ctrl+Enter — проверить, Tab — отступ; после верного ответа Enter — следующий шаг.</p>
+
+    <h2>3. Примерный план (около 80 минут)</h2>
+    <table id="plan"><tr><th>Этап</th><th>Шагов</th><th>Время</th><th>Результат</th></tr></table>
+
+    <h2>4. Шаги тренажёра</h2>
+    <div id="steps"></div>
+
+    <h2>5. Итоговый код</h2>
+    <p>Код, который получается у ученика в конце тренажёра (с учётом всего, что дописал робот). Ученик может скачать его кнопкой «Скачать мой код» на дипломе.</p>
+    <div id="final"></div>
+  </div>
+
+  <script src="steps.js"></script>
+  <script>
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const KIND = {
+      folder: 'Действие на рабочем столе', open: 'Действие в VS Code', newfile: 'Создать файл',
+      emmet: 'Набрать в редакторе', code: 'Набрать в редакторе', terminal: 'Действие в VS Code',
+      cmd: 'Команда в терминале', github: 'Действие на сайте GitHub', test: 'Проверка', finish: 'Завершение',
+    };
+    const TIME = { prep: '5 мин', html: '15 мин', css: '20 мин', js: '25 мин', git: '15 мин' };
+    const RESULT = {
+      prep: 'папка calculator, файлы index.html, style.css, script.js',
+      html: 'разметка калькулятора: окно, экран, 16 кнопок',
+      css: 'оформление в стиле калькулятора Windows',
+      js: 'работающий калькулятор (12 + 30 = 42)',
+      git: 'README, коммит, репозиторий на GitHub, git push',
+    };
+
+    // План
+    const plan = document.getElementById('plan');
+    STAGES.forEach((sg) => {
+      const n = STEPS.filter((s) => s.stage === sg.id).length;
+      plan.insertAdjacentHTML('beforeend', `<tr><td>${sg.name}</td><td>${n}</td><td>${TIME[sg.id]}</td><td>${RESULT[sg.id]}</td></tr>`);
+    });
+
+    // Окончательный текст блока и что добавил робот
+    function finalBlock(file, id) {
+      const b = FILES[file].find((x) => x.id === id);
+      return b ? b.v[b.v.length - 1][1] : '';
+    }
+    function versionAt(file, id, stepId) {
+      const b = FILES[file].find((x) => x.id === id);
+      const v = b && b.v.find(([s]) => s === stepId);
+      return v ? v[1] : '';
+    }
+
+    // Шаги
+    const box = document.getElementById('steps');
+    let n = 0;
+    STAGES.forEach((sg, si) => {
+      box.insertAdjacentHTML('beforeend', `<h3>4.${si + 1}. ${sg.name}</h3>`);
+      STEPS.filter((s) => s.stage === sg.id).forEach((s) => {
+        n++;
+        let html = `<div class="step"><div class="step-h">Шаг ${n}. ${esc(s.title)} <span style="font-weight:normal">(id: ${s.id}; ${KIND[s.kind]}${s.file ? ', файл ' + s.file : ''})</span></div>`;
+        html += `<p class="ni"><span class="lbl">Задание:</span> ${esc(s.say.replace(/\{login\}/g, 'логин'))}</p>`;
+        if (s.type) html += `<p class="ni"><span class="lbl">Ученик набирает:</span></p><pre>${esc(s.type.replace(/\{login\}/g, 'логин'))}</pre>`;
+        if (s.kind === 'code') {
+          const got = versionAt(s.file, s.block, s.id);
+          if (got && got.replace(/\s+/g, ' ').trim() !== s.type.replace(/\s+/g, ' ').trim()) {
+            html += `<p class="ni"><span class="lbl">После шага в файле (робот дописал):</span></p><pre>${esc(got.trimEnd())}</pre>`;
+          }
+        }
+        if (s.win) html += `<p class="ni"><span class="lbl">Объяснение для ученика:</span> ${esc(s.win)}</p>`;
+        html += `<p class="ni"><span class="lbl">Комментарий преподавателю:</span> ${esc(s.t || '')}</p></div>`;
+        box.insertAdjacentHTML('beforeend', html);
+      });
+    });
+
+    // Итоговый код
+    const fin = document.getElementById('final');
+    Object.keys(FILES).forEach((f) => {
+      const text = FILES[f].map((b) => {
+        const t = b.v[b.v.length - 1][1];
+        return t.split('\n').map((l) => (l ? ' '.repeat(b.i) + l : l)).join('\n');
+      }).join('\n');
+      fin.insertAdjacentHTML('beforeend', `<h3>${f}</h3><pre>${esc(text)}</pre>`);
+    });
+  </script>
+</body>
+</html>

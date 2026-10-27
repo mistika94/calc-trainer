@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор: тренажёр</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Робот Байт -->
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="robot" viewBox="0 0 80 90">
+      <line x1="40" y1="14" x2="40" y2="4" stroke="#22252b" stroke-width="3"/>
+      <circle cx="40" cy="5" r="4" fill="#f25f4c" stroke="#22252b" stroke-width="2.5"/>
+      <rect x="10" y="14" width="60" height="44" rx="8" fill="#7fc8d3" stroke="#22252b" stroke-width="3"/>
+      <rect x="4" y="28" width="6" height="14" rx="2" fill="#f2c14e" stroke="#22252b" stroke-width="2.5"/>
+      <rect x="70" y="28" width="6" height="14" rx="2" fill="#f2c14e" stroke="#22252b" stroke-width="2.5"/>
+      <circle cx="28" cy="34" r="7" fill="#fff" stroke="#22252b" stroke-width="2.5"/>
+      <circle cx="52" cy="34" r="7" fill="#fff" stroke="#22252b" stroke-width="2.5"/>
+      <circle cx="29" cy="35" r="3" fill="#22252b"/>
+      <circle cx="53" cy="35" r="3" fill="#22252b"/>
+      <path d="M30 47 q10 7 20 0" fill="none" stroke="#22252b" stroke-width="3" stroke-linecap="round"/>
+      <rect x="20" y="62" width="40" height="24" rx="5" fill="#f2c14e" stroke="#22252b" stroke-width="3"/>
+      <rect x="33" y="69" width="14" height="10" rx="2" fill="#fff" stroke="#22252b" stroke-width="2"/>
+    </symbol>
+  </svg>
+
+  <!-- Приветствие -->
+  <div class="welcome" id="welcome">
+    <div class="welcome-box">
+      <svg class="welcome-robot"><use href="#robot"/></svg>
+      <h1>Калькулятор</h1>
+      <p>Привет! Я Байт. Сделаем настоящий калькулятор: от пустой папки до проекта на GitHub.</p>
+      <input id="nameInput" maxlength="20" placeholder="Как тебя зовут?" autocomplete="off">
+      <input id="loginInput" maxlength="39" placeholder="Логин на GitHub (если есть)" autocomplete="off" spellcheck="false">
+      <div class="welcome-msg" id="welcomeMsg"></div>
+      <button id="startBtn" class="run">Начать</button>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="logo">Калькулятор</div>
+    <nav class="stages" id="stages"></nav>
+    <div class="player"><span id="playerName"></span> <button class="reset" id="resetBtn" title="Начать заново">↺</button></div>
+  </header>
+
+  <main class="layout">
+    <section class="left">
+      <div class="step-no" id="stepNo"></div>
+
+      <div class="robot">
+        <svg class="robot-face"><use href="#robot"/></svg>
+        <div class="bubble" id="bubble"></div>
+      </div>
+
+      <div class="sample" id="sample">
+        <div class="sample-head">Образец</div>
+        <pre id="sampleCode"></pre>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="actions">
+        <button class="run hidden" id="checkBtn">Проверить</button>
+        <button class="next hidden" id="nextBtn">Дальше →</button>
+        <button class="run hidden" id="diplomaBtn">Получить диплом</button>
+      </div>
+      <div class="key-hint" id="keyHint"></div>
+
+      <div class="teacher-note hidden" id="teacherNote"></div>
+    </section>
+
+    <section class="scene" id="scene"></section>
+  </main>
+
+  <div class="modal hidden" id="modal"></div>
+
+  <script src="steps.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
