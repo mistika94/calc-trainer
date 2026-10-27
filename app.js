@@ -122,7 +122,9 @@ function siteDoc() {
   let html = buildFile('index.html');
   html = html.replace(/<link rel="stylesheet" href="style\.css">/, `<style>${buildFile('style.css')}</style>`);
   html = html.replace(/<script src="script\.js"><\/script>/, `<script>${buildFile('script.js')}<\/script>`);
-  return html;
+  // служебное: калькулятор сообщает тренажёру, что на экране (работает и при открытии файла с диска)
+  const report = `<script>document.addEventListener('click', () => setTimeout(() => { const d = document.getElementById('display'); if (d) parent.postMessage({ calcDisplay: d.value }, '*'); }, 0));<\/script>`;
+  return html.includes('</body>') ? html.replace('</body>', report + '\n</body>') : html + report;
 }
 function siteTitle() {
   const m = buildFile('index.html').match(/<title>(.*?)<\/title>/);
@@ -192,7 +194,6 @@ function feedback(html, ok) {
 // ───────────── Сцены ─────────────
 function renderScene() {
   const st = step();
-  clearInterval(UI.testTimer);
   const scene = $('#scene');
   scene.className = 'scene scene-' + st.scene;
   if (st.scene === 'desktop') return renderDesktop(scene);
@@ -557,13 +558,13 @@ function showGitLogin() {
 }
 
 function startTestWatch() {
-  UI.testTimer = setInterval(() => {
-    try {
-      const d = $('#preview').contentDocument.getElementById('display');
-      if (d && d.value === '42') { clearInterval(UI.testTimer); succeed(); }
-    } catch (e) { /* ждём */ }
-  }, 300);
+  // ответ приходит сообщением из окна с калькулятором (см. siteDoc)
+  UI.testTimer = 1;
 }
+window.addEventListener('message', (e) => {
+  if (!e.data || typeof e.data.calcDisplay !== 'string') return;
+  if (step().kind === 'test' && !S.done && e.data.calcDisplay === '42') succeed();
+});
 
 function updatePreview() {
   const fr = $('#preview');
