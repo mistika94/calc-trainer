@@ -95,6 +95,8 @@ code, pre { font-family: var(--mono); }
 .tdots button { width: 11px; height: 11px; padding: 0; border: 1.5px solid var(--ink); border-radius: 50%; background: #fff; }
 .tdots button.ok { background: var(--green); }
 .tdots button.on { background: var(--yellow); }
+.memo { padding: 4px 12px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; color: var(--ink); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.memo:hover { background: #fff3cf; }
 .player { white-space: nowrap; font-weight: 600; }
 .reset { margin-left: 6px; padding: 2px 8px; border: 2px solid var(--ink); border-radius: 6px; background: #fff; }
 

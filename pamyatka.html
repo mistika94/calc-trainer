@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор: памятка</title>
+  <style>
+    :root {
+      --paper: #fbf8f1; --grid: #dfe7f1; --ink: #22252b; --muted: #5d6270;
+      --html: #c4561c; --css: #2563a8; --js: #8a6a00; --green: #3a9d5d;
+      --mono: Consolas, 'Cascadia Mono', 'Courier New', monospace;
+      --hand: 'Segoe Print', 'Comic Sans MS', cursive;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--ink);
+      font: 15px/1.45 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--paper);
+      background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 20px 16px 40px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    h1 { margin: 0; font: 700 30px var(--hand); }
+    .sub { color: var(--muted); }
+    .print { margin-left: auto; padding: 8px 16px; font: inherit; font-weight: 700; background: #fff; border: 2px solid var(--ink); border-radius: 8px; box-shadow: 3px 3px 0 var(--ink); cursor: pointer; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card { background: #fff; border: 2px solid var(--ink); border-radius: 10px; padding: 12px 16px; break-inside: avoid; }
+    .card.wide { grid-column: 1 / -1; }
+    h2 { margin: 0 0 8px; font-size: 19px; }
+    h2 .n { display: inline-block; width: 26px; height: 26px; margin-right: 6px; text-align: center; line-height: 22px; border: 2px solid var(--ink); border-radius: 50%; font-size: 14px; }
+    h3 { margin: 10px 0 4px; font-size: 15px; }
+    p { margin: 0 0 6px; }
+    ul, ol { margin: 0 0 6px; padding-left: 20px; }
+    li { margin-bottom: 2px; }
+    code, pre, kbd { font-family: var(--mono); font-size: 13.5px; }
+    code { background: #f2f3f5; padding: 0 4px; border-radius: 3px; }
+    kbd { display: inline-block; padding: 0 5px; border: 1.5px solid var(--ink); border-bottom-width: 3px; border-radius: 4px; background: #fff; font-size: 12.5px; }
+    pre { margin: 4px 0 8px; padding: 8px 10px; background: #f6f7f9; border: 1px solid #d8dce4; border-radius: 6px; white-space: pre; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin: 4px 0 6px; }
+    th, td { padding: 5px 7px; border: 1px solid #c9ced8; text-align: left; vertical-align: top; }
+    th { background: #f4f5f7; font-weight: 600; }
+    .f-html { color: var(--html); font-weight: 700; }
+    .f-css { color: var(--css); font-weight: 700; }
+    .f-js { color: var(--js); font-weight: 700; }
+    .same { background: #fff3c4; padding: 0; border-radius: 2px; font-weight: 700; }
+    .note { margin-top: 6px; padding: 6px 10px; border: 2px dashed var(--muted); border-radius: 8px; color: var(--ink); }
+
+    /* схема проекта */
+    .tree { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; margin-bottom: 8px; }
+    .tree code { background: none; padding: 0; font-weight: 700; }
+
+    /* связи */
+    .links td:nth-child(2) { width: 34px; text-align: center; font-weight: 700; border-left: 0; border-right: 0; }
+    .links td:first-child { border-right: 0; }
+    .links td:nth-child(3) { border-left: 0; }
+
+    .steps { counter-reset: s; list-style: none; padding: 0; }
+    .steps li { counter-increment: s; position: relative; padding-left: 30px; margin-bottom: 6px; }
+    .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 22px; height: 22px; text-align: center; line-height: 19px; border: 2px solid var(--ink); border-radius: 50%; font-size: 12px; font-weight: 700; background: #fff; }
+
+    @media screen and (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+    @media print {
+      body { background: #fff; font-size: 11.5px; line-height: 1.35; }
+      code, pre, kbd { font-size: 10.5px; }
+      h1 { font-size: 24px; }
+      h2 { font-size: 15px; }
+      td, th { padding: 3px 5px; }
+      pre { padding: 5px 8px; white-space: pre-wrap; }
+      .wrap { padding: 0; max-width: none; }
+      .print { display: none; }
+      .card { border-width: 1.5px; padding: 8px 12px; }
+      .grid { gap: 10px; }
+      .page-break { break-before: page; }
+      @page { size: A4; margin: 1cm; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Памятка: калькулятор</h1>
+      <div class="sub">Что с чем работает, где что писать и что делать, если не работает</div>
+    </div>
+    <button class="print" onclick="print()">Распечатать</button>
+  </header>
+
+  <div class="grid">
+
+    <!-- 1. Проект -->
+    <section class="card">
+      <h2><span class="n">1</span>Из чего состоит проект</h2>
+      <div class="tree">
+        <code>calculator/</code><span>папка проекта — всё лежит в ней</span>
+        <code class="f-html">index.html</code><span>структура: что есть на странице</span>
+        <code class="f-css">style.css</code><span>оформление: цвета, размеры, расположение</span>
+        <code class="f-js">script.js</code><span>логика: что происходит при нажатии</span>
+        <code>README.md</code><span>описание проекта для GitHub</span>
+      </div>
+      <p>Имена файлов и папки — <b>маленькими латинскими буквами</b>, без пробелов.</p>
+      <p>Главный файл — <code>index.html</code>. Браузер открывает его, а он уже сам подключает <code>style.css</code> и <code>script.js</code>.</p>
+    </section>
+
+    <!-- 2. VS Code -->
+    <section class="card">
+      <h2><span class="n">2</span>VS Code</h2>
+      <table>
+        <tr><td>Открыть проект</td><td>Файл → Открыть папку → <code>calculator</code></td></tr>
+        <tr><td>Новый файл</td><td>значок «Новый файл» рядом с именем папки</td></tr>
+        <tr><td>Заготовка страницы</td><td>в пустом index.html: <kbd>!</kbd> и <kbd>Enter</kbd></td></tr>
+        <tr><td>Сохранить</td><td><kbd>Ctrl</kbd>+<kbd>S</kbd> (точка на вкладке — не сохранено)</td></tr>
+        <tr><td>Посмотреть сайт</td><td>двойной щелчок по index.html в папке, после правок — <kbd>F5</kbd></td></tr>
+        <tr><td>Отступ</td><td><kbd>Tab</kbd>, убрать — <kbd>Shift</kbd>+<kbd>Tab</kbd></td></tr>
+        <tr><td>Терминал</td><td>Терминал → Создать терминал</td></tr>
+        <tr><td>Раскладка</td><td><kbd>Alt</kbd>+<kbd>Shift</kbd> — код пишем английскими буквами</td></tr>
+      </table>
+      <p>Порядок работы всегда один: <b>написал → сохранил → обновил браузер</b>.</p>
+    </section>
+
+    <!-- 3. Что с чем связано -->
+    <section class="card wide">
+      <h2><span class="n">3</span>Что с чем связано</h2>
+      <p>Файлы находят друг друга <b>по именам</b>. Если имя в одном месте отличается хотя бы одной буквой — связь не работает. Совпадающие имена выделены жёлтым.</p>
+      <table class="links">
+        <tr><th>В <span class="f-html">index.html</span> написано</th><th></th><th>Что это находит</th></tr>
+        <tr><td><code>&lt;link rel="stylesheet" href="<span class="same">style.css</span>"&gt;</code><br>внутри <code>&lt;head&gt;</code></td><td>→</td><td>подключает файл <span class="f-css"><span class="same">style.css</span></span>. Без этой строки оформления не будет.</td></tr>
+        <tr><td><code>&lt;script src="<span class="same">script.js</span>"&gt;&lt;/script&gt;</code><br>в самом низу, перед <code>&lt;/body&gt;</code></td><td>→</td><td>подключает файл <span class="f-js"><span class="same">script.js</span></span>. Без этой строки кнопки не нажимаются.</td></tr>
+        <tr><td><code>&lt;div class="<span class="same">buttons</span>"&gt;</code></td><td>→</td><td>в <span class="f-css">style.css</span>: <code><span class="same">.buttons</span> { … }</code> — точка значит «класс»</td></tr>
+        <tr><td><code>&lt;input id="<span class="same">display</span>"&gt;</code></td><td>→</td><td>в <span class="f-css">style.css</span>: <code><span class="same">#display</span> { … }</code> — решётка значит «id»<br>в <span class="f-js">script.js</span>: <code>document.getElementById('<span class="same">display</span>')</code></td></tr>
+        <tr><td><code>&lt;button onclick="<span class="same">pressDigit</span>('7')"&gt;7&lt;/button&gt;</code></td><td>→</td><td>в <span class="f-js">script.js</span>: <code>function <span class="same">pressDigit</span>(digit) { … }</code> — при нажатии запускается эта функция, <code>digit</code> получает <code>'7'</code></td></tr>
+      </table>
+      <div class="note"><b>class</b> — имя группы, может быть у многих элементов. <b>id</b> — личное имя, на странице он только один. Большие и маленькие буквы — разные: <code>clearAll</code> и <code>clearall</code> не одно и то же.</div>
+    </section>
+
+    <!-- 4. HTML -->
+    <section class="card page-break">
+      <h2><span class="n">4</span><span class="f-html">HTML</span> — структура</h2>
+      <p>Тег — слово в угловых скобках. Почти всегда парный:</p>
+      <pre>&lt;button&gt;7&lt;/button&gt;
+открывающий  текст  закрывающий (со слешем)</pre>
+      <table>
+        <tr><td><code>&lt;head&gt;</code></td><td>служебная часть, на странице не видна</td></tr>
+        <tr><td><code>&lt;body&gt;</code></td><td>всё, что видно на странице</td></tr>
+        <tr><td><code>&lt;title&gt;</code></td><td>надпись на вкладке браузера</td></tr>
+        <tr><td><code>&lt;h1&gt;</code></td><td>заголовок</td></tr>
+        <tr><td><code>&lt;div&gt;</code></td><td>коробка для других элементов</td></tr>
+        <tr><td><code>&lt;input&gt;</code></td><td>поле (экран калькулятора), закрывать не нужно</td></tr>
+        <tr><td><code>&lt;button&gt;</code></td><td>кнопка</td></tr>
+      </table>
+      <p>Что внутри коробки — пишем со сдвигом вправо (<kbd>Tab</kbd>). Так легче увидеть, что где лежит.</p>
+    </section>
+
+    <!-- 5. CSS -->
+    <section class="card">
+      <h2><span class="n">5</span><span class="f-css">CSS</span> — оформление</h2>
+      <pre>кого {
+    свойство: значение;
+}</pre>
+      <table>
+        <tr><th>Пишем</th><th>Кого находит</th></tr>
+        <tr><td><code>button</code></td><td>все теги &lt;button&gt;</td></tr>
+        <tr><td><code>.operator</code></td><td>всех с <code>class="operator"</code></td></tr>
+        <tr><td><code>#display</code></td><td>того, у кого <code>id="display"</code></td></tr>
+        <tr><td><code>.operator, .clear</code></td><td>и тех, и других</td></tr>
+        <tr><td><code>button:hover</code></td><td>кнопку, когда над ней мышка</td></tr>
+      </table>
+      <table>
+        <tr><td><code>background-color</code></td><td>цвет фона</td></tr>
+        <tr><td><code>color</code></td><td>цвет букв</td></tr>
+        <tr><td><code>font-size</code></td><td>размер букв: <code>48px</code></td></tr>
+        <tr><td><code>display: grid</code></td><td>разложить сеткой</td></tr>
+        <tr><td><code>grid-column: span 3</code></td><td>занять 3 колонки</td></tr>
+      </table>
+      <p>Не забывай <b>двоеточие</b> и <b>точку с запятой</b>. Цвет можно писать словом: <code>red</code>, <code>white</code>.</p>
+    </section>
+
+    <!-- 6. JS -->
+    <section class="card wide">
+      <h2><span class="n">6</span><span class="f-js">JavaScript</span> — логика</h2>
+      <div class="grid" style="gap:10px">
+        <div>
+          <table>
+            <tr><td><code>let a = 0;</code></td><td>переменная — коробочка с именем, в неё положили 0</td></tr>
+            <tr><td><code>function имя() { … }</code></td><td>функция — команды с именем; работает, только когда её вызовут</td></tr>
+            <tr><td><code>onclick="имя()"</code></td><td>вызвать функцию, когда нажали кнопку</td></tr>
+            <tr><td><code>display.value</code></td><td>то, что сейчас написано на экране</td></tr>
+            <tr><td><code>Number('12')</code></td><td>превращает текст <code>'12'</code> в число <code>12</code></td></tr>
+          </table>
+        </div>
+        <div>
+          <table>
+            <tr><td><code>=</code></td><td>положить в коробку</td></tr>
+            <tr><td><code>===</code></td><td>сравнить: «равно ли?»</td></tr>
+            <tr><td><code>if (…) { … }</code></td><td>если условие верно — сделать</td></tr>
+            <tr><td><code>else if (…)</code></td><td>а иначе если…</td></tr>
+            <tr><td><code>'текст'</code></td><td>текст всегда в кавычках</td></tr>
+          </table>
+        </div>
+      </div>
+      <p><b>Почему нужен Number:</b> <code>'12' + '30'</code> даст <code>'1230'</code> (текст склеился), а <code>12 + 30</code> даст <code>42</code>.</p>
+      <p><b>Кавычки в onclick:</b> снаружи двойные, внутри одинарные — <code>onclick="pressDigit('7')"</code>.</p>
+    </section>
+
+    <!-- 7. Git -->
+    <section class="card page-break">
+      <h2><span class="n">7</span>Git — команды по порядку</h2>
+      <p>Терминал открыт в папке проекта. Команды — маленькими буквами, после каждой <kbd>Enter</kbd>.</p>
+      <h3>Один раз на компьютере</h3>
+      <pre>git config --global user.name "Ivan Petrov"
+git config --global user.email "ivan@mail.ru"</pre>
+      <h3>Первая отправка проекта</h3>
+      <ol class="steps">
+        <li><code>git init</code> — Git начинает следить за папкой</li>
+        <li><code>git add .</code> — выбрать все файлы (точка — «всё»)</li>
+        <li><code>git commit -m "Мой калькулятор"</code> — сохранить снимок с подписью</li>
+        <li>создать репозиторий на GitHub (справа)</li>
+        <li><code>git branch -M main</code> — назвать ветку main</li>
+        <li><code>git remote add origin https://github.com/логин/calculator.git</code> — куда отправлять</li>
+        <li><code>git push -u origin main</code> — отправить</li>
+      </ol>
+      <h3>Потом, после каждой правки</h3>
+      <pre>git add .
+git commit -m "что изменил"
+git push</pre>
+    </section>
+
+    <!-- 8. GitHub -->
+    <section class="card">
+      <h2><span class="n">8</span>GitHub</h2>
+      <p><b>Репозиторий</b> — папка проекта на сайте GitHub.</p>
+      <ol class="steps">
+        <li>github.com → <b>+</b> → <b>New repository</b></li>
+        <li>Repository name: <code>calculator</code></li>
+        <li>Выбрать <b>Public</b></li>
+        <li>Галочку <b>Add a README file</b> не ставить — README уже есть в проекте</li>
+        <li><b>Create repository</b> — дальше команды 5–7 слева</li>
+      </ol>
+      <h3>Сайт по ссылке</h3>
+      <p>Settings → Pages → Branch: <code>main</code> → Save. Через 1–2 минуты калькулятор откроется по адресу:</p>
+      <pre>логин.github.io/calculator</pre>
+      <div class="note">Регистрация на GitHub — с 13 лет. Если тебе меньше, проект загружает преподаватель.</div>
+    </section>
+
+    <!-- 9. Не работает -->
+    <section class="card wide">
+      <h2><span class="n">9</span>Не работает? Проверь по порядку</h2>
+      <div class="grid" style="gap:10px">
+        <table>
+          <tr><th>Что видишь</th><th>Что проверить</th></tr>
+          <tr><td>Ничего не меняется</td><td>Сохранил (<kbd>Ctrl</kbd>+<kbd>S</kbd>)? Обновил браузер (<kbd>F5</kbd>)?</td></tr>
+          <tr><td>Нет оформления</td><td>Есть ли строка <code>&lt;link&gt;</code> в head? Совпадает имя <code>style.css</code>?</td></tr>
+          <tr><td>Кнопки не нажимаются</td><td>Есть ли <code>&lt;script src="script.js"&gt;</code> перед <code>&lt;/body&gt;</code>? Есть ли <code>onclick</code> у кнопки?</td></tr>
+          <tr><td>Не красится одна вещь</td><td>Совпадает ли имя: <code>.buttons</code> и <code>class="buttons"</code>? Точка или решётка?</td></tr>
+        </table>
+        <table>
+          <tr><th>Что видишь</th><th>Что проверить</th></tr>
+          <tr><td>12 + 30 = 1230</td><td>Забыт <code>Number(…)</code></td></tr>
+          <tr><td>Не работает одна кнопка</td><td><kbd>F12</kbd> → вкладка Console: там написано, какое имя не найдено</td></tr>
+          <tr><td>Всё «поехало»</td><td>Закрыты ли все теги, скобки <code>{ }</code> <code>( )</code> и кавычки?</td></tr>
+          <tr><td><code>git push</code> — ошибка</td><td>Совпадает ли логин и имя в адресе <code>git remote</code>? Не стояла ли галочка README?</td></tr>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>
